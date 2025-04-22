@@ -530,7 +530,7 @@
       localStorage.removeItem('isLoggedIn');
       window.location.href = 'login.html';
     }
-    const chatServerBaseURL = `http://${window.location.hostname}:5002`;
+    const chatServerBaseURL = `https://lyw.onrender.com`;
     function toggleChat() {
       const chatbox = document.getElementById("chatbox");
       const isHidden = window.getComputedStyle(chatbox).display === "none";
