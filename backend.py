@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 import os
+import google.generativeai as genai
 app = Flask(__name__)
 CORS(app)
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
@@ -38,7 +39,21 @@ def login():
     if user and user.password == password:
         return jsonify({"message": "Login successful!", "name": user.name}), 200
     return jsonify({"error": "Invalid email or password"}), 401
+genai.configure(api_key=os.environ.get("GENAI_API_KEY"))
+model = genai.GenerativeModel("gemma-3-27b-it")
+@app.route('/chat', methods=['POST'])
+def chat():
+    data = request.get_json()
+    user_message = data.get("message", "")
+    if not user_message:
+        return jsonify({'response': "Please ask me something!"}), 400
+    try:
+        response = model.generate_content(user_message)
+        return jsonify({'response': response.text.strip()})
+    except Exception as e:
+        print("Gemini API error:", e)
+        return jsonify({'response': "Oops! Gemini had a problem. Try again soon."}), 500
 with app.app_context():
     db.create_all()
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5002)
+    app.run(host="0.0.0.0", port=5002, debug=True)
