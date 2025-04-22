@@ -4,7 +4,7 @@ import google.generativeai as genai
 import os
 app = Flask(__name__)
 CORS(app)
-genai.configure(api_key="place_your_api_here")
+genai.configure(api_key=os.environ.get("GENAI_API_KEY"))
 model = genai.GenerativeModel("gemma-3-27b-it")
 @app.route('/chat', methods=['POST'])
 def chat():
