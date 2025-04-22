@@ -1,0 +1,21 @@
+{
+    "name": "Learn Your Way",
+    "short_name": "LYW",
+    "start_url": "login.html",
+    "display": "standalone",
+    "background_color": "#003135",
+    "theme_color": "#0FA4AF",
+    "icons": [
+      {
+        "src": "logo.png",
+        "sizes": "192x192",
+        "type": "image/png"
+      },
+      {
+        "src": "logo.png",
+        "sizes": "512x512",
+        "type": "image/png"
+      }
+    ]
+  }
+  

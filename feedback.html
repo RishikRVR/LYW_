@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+  <link rel="manifest" href="manifest.json" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="apple-touch-icon" href="logo.png">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Learn Your Way</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="theme.css">
+  <style>
+    :root {
+      --bg-primary: linear-gradient(135deg, #F6F8FF, #DFFFE0);
+      --bg-secondary: #caeddb;
+      --content-bg: linear-gradient(145deg, #E0F7FA, #B2EBF2);
+      --nav-bg: linear-gradient(145deg, #10B981, #14B8A6);
+      --text-primary: #1F2937;
+      --text-secondary: #1F2937;
+      --button-bg: linear-gradient(145deg, #10B981, #14B8A6);
+      --button-hover: linear-gradient(145deg, #14B8A6, #0FA4AF);
+      --card-bg: rgba(255, 255, 255, 0.9);
+      --border-color: rgba(0, 0, 0, 0.1);
+      --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      --course-btn-gradient: linear-gradient(145deg, #10B981, #14B8A6);
+      --course-btn-hover: linear-gradient(145deg, #14B8A6, #0FA4AF);
+      --footer-bg: linear-gradient(145deg, #10B981, #14B8A6);
+    }
+    [data-theme="dark"] {
+      --bg-primary: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 70%, #16213e 100%);
+      --bg-secondary: #161a24;
+      --content-bg: linear-gradient(145deg, #1a1a2e, #16213e);
+      --nav-bg: linear-gradient(145deg, #6c5ce7, #8175ea);
+      --text-primary: #f5f5f5;
+      --text-secondary: rgba(245, 245, 245, 0.7);
+      --button-bg: linear-gradient(145deg, #6c5ce7, #8175ea);
+      --button-hover: linear-gradient(145deg, #8175ea, #5649d8);
+      --card-bg: rgba(26, 26, 26, 0.9);
+      --border-color: rgba(255, 255, 255, 0.1);
+      --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+      --course-btn-gradient: linear-gradient(145deg, #6c5ce7, #8175ea);
+      --course-btn-hover: linear-gradient(145deg, #8175ea, #5649d8);
+      --footer-bg: linear-gradient(145deg, #6c5ce7, #8175ea);
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background-attachment: fixed;
+      background-size: cover;
+    }
+    #courseHeading {
+        margin-bottom: 5rem;
+    }
+    .nav-logo {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      padding: 0.75rem 1rem;
+      background: var(--nav-bg);
+      color: white;
+      border: none;
+      border-radius: 0.5rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      margin-bottom: 0.5rem;
+    }
+    .course-btn, .nav-btn {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      padding: 0.75rem 1rem;
+      background: var(--nav-bg);
+      color: white;
+      border: none;
+      border-radius: 0.5rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      margin-bottom: 0.5rem;
+    }
+    .course-btn:hover, .nav-btn:hover {
+      background: var(--button-hover);
+    }
+    .course-btn::after {
+      content: "▼";
+      font-size: 0.8rem;
+      margin-left: 0.5rem;
+    }
+    .course-btn.open::after {
+      content: "▲";
+    }
+    .content-container {
+      padding: 1rem;
+      padding-top: 80px;
+    }
+    .hero-section {
+      background: var(--bg-secondary);
+      border-radius: 1rem;
+      padding: 2rem 1rem;
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 1rem;
+      padding: 1.5rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    .primary-btn {
+      background: var(--button-bg);
+      color: white;
+      border-radius: 0.75rem;
+      padding: 0.75rem 1.5rem;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+    }
+    .primary-btn:hover {
+      background: var(--button-hover);
+      transform: translateY(-2px);
+    }
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .primary-btn {
+      background: var(--button-bg);
+      color: white;
+      padding: 0.5rem 1.25rem;
+      border-radius: 0.5rem;
+      text-decoration: none;
+      display: inline-block;
+      transition: all 0.3s ease;
+      margin: 0.25rem;
+      border: none;
+      cursor: pointer;
+      font-weight: 500;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .primary-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--button-hover);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: -1;
+    }
+    .primary-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    .primary-btn:hover::before {
+      opacity: 1;
+    }
+    .video-container iframe {
+      width: 100%;
+      height: 200px;
+      border-radius: 0.5rem;
+      margin-bottom: 1rem;
+      border: none;
+    }
+    .course-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .course-section {
+      background: var(--course-btn-gradient);
+      color: white;
+      border-radius: 0.75rem;
+      padding: 1.5rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      width: 30%;
+      min-width: 250px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      box-shadow: var(--card-shadow);
+      border: none;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+    }
+    .course-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--course-btn-hover);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: -1;
+    }
+    .course-section:hover {
+      transform: scale(1.03);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+    .course-section:hover::before {
+      opacity: 1;
+    }
+    .course-content {
+      display: none;
+      margin: 2rem auto;
+      max-width: 1200px;
+      flex-direction: column;
+      width: 100%;
+    }
+    .content {
+        max-width: 1200px;
+        margin: 2rem auto;
+        padding: 2rem;
+        padding-bottom: 6rem;
+        text-align: center;
+        flex: 1;
+        background: var(--content-bg);
+        backdrop-filter: blur(10px);
+        border-radius: 1rem;
+        box-shadow: var(--card-shadow);
+        border: 1px solid var(--border-color);
+        min-height: 1200px;
+    }
+    .back-btn {
+      background: var(--button-bg);
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.5rem;
+      margin: 2rem auto;
+      display: block;
+      width: fit-content;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      border: none;
+      box-shadow: var(--card-shadow);
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+    }
+    .back-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--button-hover);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: -1;
+    }
+    .back-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    }
+    .back-btn:hover::before {
+      opacity: 1;
+    }
+    .content-section {
+      margin-bottom: 3rem;
+      width: 100%;
+    }
+    .section-title {
+      font-size: 1.75rem;
+      margin-bottom: 1.5rem;
+      text-align: center;
+      position: relative;
+      padding-bottom: 0.5rem;
+      color: var(--text-primary);
+    }
+    .section-title:after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 3px;
+      background: var(--button-bg);
+      border-radius: 3px;
+    }
+    .section-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.5rem;
+      padding: 0 1rem;
+    }
+    .empty-message {
+      color: var(--text-secondary);
+      opacity: 0.6;
+      font-style: italic;
+      padding: 2rem;
+      text-align: center;
+      width: 100%;
+    }
+    .button-container {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: auto;
+      padding-top: 1rem;
+    }
+    #floating-tools {
+        position: fixed;
+        bottom: 1.5rem;
+        left: 1rem;
+        right: 1rem;
+        display: flex;
+        justify-content: space-between;
+        z-index: 950;
+        transition: bottom 0.3s ease;
+    }
+    #floating-tools.above-footer {
+         bottom: 6.5rem;
+    }
+    footer {
+      position: fixed;
+      right: 0;
+      left: 0;
+      bottom: 0;
+      background: var(--footer-bg);
+      color: white;
+      border-radius: 1rem;
+      padding: 1.5rem;
+      text-align: center;
+      margin-top: 2rem;
+    }
+    #timer {
+      position: fixed;
+      bottom: 5rem;
+      left: 1rem;
+      background: var(--nav-bg);
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      font-family: monospace;
+      font-size: 0.9rem;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      cursor: pointer;
+      z-index: 950;
+    }
+    #chat-toggle {
+      position: fixed;
+      bottom: 5rem;
+      right: 1rem;
+      background: var(--nav-bg);
+      color: white;
+      width: 50px;
+      height: 50px;
+      font-size: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      z-index: 1000;
+    }
+    #chatbox {
+      display: none;
+      position: fixed;
+      bottom: 8.5rem;
+      right: 1rem;
+      width: 300px;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 0.75rem;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      overflow: hidden;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      max-height: 400px;
+    }
+    #chat-header {
+      background: var(--nav-bg);
+      color: white;
+      padding: 0.75rem 1rem;
+      font-weight: bold;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    #chat-messages {
+      flex: 1;
+      padding: 0.75rem;
+      overflow-y: auto;
+      font-size: 1rem;
+      line-height: 1.0;
+      color: var(--text-primary);
+    }
+    #chat-input {
+      border-top: 1px solid var(--border-color);
+      padding: 0.5rem;
+      border: none;
+      outline: none;
+      width: 100%;
+      font-size: 14px;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+    }
+    .nav-buttons {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+    #theme-toggle {
+      position: absolute;
+      top: 12px;
+      left: 198px;
+      background-color: rgba(255, 255, 255, 0.2);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+      z-index: 100;
+    }
+    #theme-toggle:hover {
+        background-color: rgba(255, 255, 255, 0.3);
+      transform: translateY(-2px);
+    }
+    #user-menu {
+      background: var(--card-bg);
+      color: var(--text-primary);
+      border: 1px solid var(--border-color);
+    }
+    .form-group {
+      margin-bottom: 1rem;
+    }
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+    input, textarea {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid var(--border-color);
+      border-radius: 0.5rem;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      box-sizing: border-box;
+      font-size: 1rem;
+    }
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+    .navbar {
+      background: var(--nav-bg);
+      color: white;
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      top: 0;
+      z-index: 998;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    .user-section {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .menu-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 250px;
+      height: 100vh;
+      background: var(--nav-bg);
+      color: white;
+      transform: translateX(-100%);
+      transition: transform 0.3s ease;
+      z-index: 999;
+      padding: 1rem;
+      padding-top: 60px;
+      overflow-y: auto;
+    }
+    .menu-container.open {
+      transform: translateX(0);
+    }
+    .menu-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 998;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .menu-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .submenu {
+      padding-left: 1rem;
+      margin-top: 0.5rem;
+      display: none;
+    }
+    .submenu.open {
+      display: block;
+    }
+    .submenu-item {
+      display: block;
+      padding: 0.5rem 1rem;
+      color: white;
+      cursor: pointer;
+      border-radius: 0.25rem;
+      margin-bottom: 0.25rem;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    .submenu-item:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+    @media (max-width: 600px) {
+      .content-container {
+        padding: 0.5rem;
+        padding-top: 70px;
+      }
+      .card {
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="flex items-center">
+      <button onclick="toggleMenu()">☰</button>
+      <span id="nav-logo" class="text-xl font-bold ml-2 cursor-pointer hover:underline">Learn Your Way</span>
+    </div>
+    <button id="theme-toggle">Toggle Theme</button>    
+    <div class="relative">
+      <div id="user-greeting" class="cursor-pointer font-medium" onclick="toggleUserMenu()">Hello, User ▼</div>
+      <div id="user-menu" class="hidden absolute right-0 mt-2 w-32 bg-white dark:bg-[#024950] rounded shadow-md z-50 text-sm">
+        <button id="auth-action-btn" class="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-[#0FA4AF]">Log Out</button>
+      </div>     
+    </div>    
+  </nav>
+  <div class="menu-container">
+    <nav class="space-y-4">
+      <button class="course-btn" onclick="toggleSubMenu(this)">Courses</button>
+      <div class="submenu">
+        <button class="course-btn" onclick="toggleSubMenu(this)">Java</button>
+        <div class="submenu">
+          <a href="#" class="submenu-item" onclick="showContent('java_quizzes')">Quizzes</a>
+          <a href="#" class="submenu-item" onclick="showContent('java_notes')">Notes</a>
+          <a href="#" class="submenu-item" onclick="showContent('java_videos')">Videos</a>
+        </div>
+        <button class="course-btn" onclick="toggleSubMenu(this)">Python</button>
+        <div class="submenu">
+          <a href="#" class="submenu-item" onclick="showContent('python_videos')">Videos</a>
+          <a href="#" class="submenu-item" onclick="showContent('python_notes')">Notes</a>
+          <a href="#" class="submenu-item" onclick="showContent('python_quizzes')">Quizzes</a>
+        </div>
+        <button class="course-btn" onclick="toggleSubMenu(this)">JavaScript</button>
+        <div class="submenu">
+          <a href="#" class="submenu-item" onclick="showContent('javascript_videos')">Videos</a>
+          <a href="#" class="submenu-item" onclick="showContent('javascript_notes')">Notes</a>
+          <a href="#" class="submenu-item" onclick="showContent('javascript_quizzes')">Quizzes</a>
+        </div>
+        <button class="course-btn" onclick="toggleSubMenu(this)">C++</button>
+        <div class="submenu">
+          <a href="#" class="submenu-item" onclick="showContent('cpp_videos')">Videos</a>
+          <a href="#" class="submenu-item" onclick="showContent('cpp_notes')">Notes</a>
+          <a href="#" class="submenu-item" onclick="showContent('cpp_quizzes')">Quizzes</a>
+        </div>
+        <button class="course-btn" onclick="toggleSubMenu(this)">Data Structures</button>
+        <div class="submenu">
+          <a href="#" class="submenu-item" onclick="showContent('ds_videos')">Videos</a>
+          <a href="#" class="submenu-item" onclick="showContent('ds_notes')">Notes</a>
+          <a href="#" class="submenu-item" onclick="showContent('ds_quizzes')">Quizzes</a>
+        </div>
+        <button class="course-btn" onclick="toggleSubMenu(this)">Algorithms</button>
+        <div class="submenu">
+          <a href="#" class="submenu-item" onclick="showContent('algo_videos')">Videos</a>
+          <a href="#" class="submenu-item" onclick="showContent('algo_notes')">Notes</a>
+          <a href="#" class="submenu-item" onclick="showContent('algo_quizzes')">Quizzes</a>
+        </div>
+        <button class="course-btn" onclick="toggleSubMenu(this)">Web Development</button>
+        <div class="submenu">
+          <a href="#" class="submenu-item" onclick="showContent('webdev_videos')">Videos</a>
+          <a href="#" class="submenu-item" onclick="showContent('webdev_notes')">Notes</a>
+          <a href="#" class="submenu-item" onclick="showContent('webdev_quizzes')">Quizzes</a>
+        </div>
+      </div>
+      <a href="contact.html" class="nav-btn">Contact</a>
+      <a href="feedback.html" class="nav-btn">Feedback</a>
+      <a href="about.html" class="nav-btn">About</a>
+      <a href="faq.html" class="nav-btn">FAQ</a>
+    </nav>
+  </div>
+  <div class="menu-overlay" onclick="toggleMenu()"></div>
+  <div class="content-container">
+    <section class="card">
+      <h2 class="text-2xl font-bold mb-4" style="color: var(--text-secondary)">Submit Your Feedback</h2>
+      <form id="feedbackForm" class="space-y-4">
+        <div class="form-group">
+          <label for="name">Name:</label>
+          <input type="text" id="name" name="name" placeholder="Enter your name" required>
+        </div>
+        <div class="form-group">
+          <label for="feedback">Feedback:</label>
+          <textarea id="feedback" name="feedback" placeholder="Enter your feedback" required></textarea>
+        </div>
+        <button type="submit" class="primary-btn">Submit Feedback</button>
+      </form>
+    </section>
+    <section class="card mt-6">
+      <h2 class="text-2xl font-bold mb-4" style="color: var(--text-secondary)">Feedback Received</h2>
+      <div id="feedbackList"></div>
+    </section>
+    <footer class="mt-6">
+      <p>&copy; 2025 Learn Your Way. All rights reserved.</p>
+    </footer>
+  </div>
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    function updateThemeIcon(theme) {
+      themeToggle.textContent = theme === 'dark' ? '🌙' : '☀️';
+    }
+    let savedTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    updateThemeIcon(savedTheme);
+    themeToggle.addEventListener('click', () => {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      updateThemeIcon(newTheme);
+    });
+    document.addEventListener('DOMContentLoaded', () => {
+      displayFeedback();
+    });
+    document.getElementById('feedbackForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('name').value;
+      const feedback = document.getElementById('feedback').value;
+      const date = new Date().toLocaleString();
+      const feedbackObj = { name, feedback, date };
+      let feedbackArray = JSON.parse(localStorage.getItem('feedback')) || [];
+      feedbackArray.push(feedbackObj);
+      localStorage.setItem('feedback', JSON.stringify(feedbackArray));
+      document.getElementById('feedbackForm').reset();
+      displayFeedback();
+    });
+    function displayFeedback() {
+      const feedbackList = document.getElementById('feedbackList');
+      const feedbackArray = JSON.parse(localStorage.getItem('feedback')) || [];
+      feedbackList.innerHTML = '';
+      feedbackArray.forEach((item) => {
+        const feedbackItem = document.createElement('div');
+        feedbackItem.classList.add('feedback-item');
+        feedbackItem.innerHTML = `
+          <h3>${item.name}</h3>
+          <p>${item.feedback}</p>
+          <p><small>Submitted on: ${item.date}</small></p>
+        `;
+        feedbackList.appendChild(feedbackItem);
+      });
+      if (feedbackArray.length === 0) {
+        feedbackList.innerHTML = '<p class="text-sm" style="color: var(--text-secondary)">No feedback submitted yet.</p>';
+      }
+    }
+    function toggleMenu() {
+      document.querySelector(".menu-container").classList.toggle("open");
+      document.querySelector(".menu-overlay").classList.toggle("open");
+    }
+    function toggleSubMenu(button) {
+      const nextSubmenu = button.nextElementSibling;
+      if (nextSubmenu && nextSubmenu.classList.contains('submenu')) {
+        nextSubmenu.classList.toggle('open');
+        button.classList.toggle('open');
+      }
+    }
+    function toggleUserMenu() {
+      const menu = document.getElementById("user-menu");
+      menu.classList.toggle("hidden");
+    }
+    const username = localStorage.getItem("userName") || "User";
+    const userGreeting = document.getElementById("user-greeting");
+    const authBtn = document.getElementById("auth-action-btn");
+    const userMenu = document.getElementById("user-menu");
+    if (username && username !== "User") {
+      userGreeting.textContent = `Hello, ${username} ▼`;
+      authBtn.textContent = "Log Out";
+      authBtn.onclick = () => {
+        localStorage.removeItem("userName");
+        window.location.href = "login.html";
+      };
+      userGreeting.onclick = () => toggleUserMenu();
+      userMenu.classList.add("hidden");
+    } else {
+      userGreeting.textContent = `Login`;
+      userGreeting.onclick = () => window.location.href = "login.html";
+      userMenu.classList.add("hidden");
+    }
+    document.getElementById("nav-logo").addEventListener("click", () => {
+      window.location.href = "dashboard.html";
+    });
+    function showContent(topic) {
+      window.location.href = `dashboard.html?topic=${topic}`;
+    }
+  </script>
+  <section class="card mt-6">
+    <h2 class="text-2xl font-bold mb-4" style="color: var(--text-secondary)">Feedback Received</h2>
+    <div id="feedbackList"></div>
+</section>
+<script>
+    function displayFeedback() {
+        const feedbackList = document.getElementById('feedbackList');
+        const feedbackArray = JSON.parse(localStorage.getItem('feedback')) || [];
+        feedbackList.innerHTML = '';
+        feedbackArray.forEach((item) => {
+            const feedbackItem = document.createElement('div');
+            feedbackItem.classList.add('feedback-item');
+            feedbackItem.innerHTML = `
+                <h3>${item.name}</h3>
+                <p>${item.feedback}</p>
+                <p><small>Submitted on: ${item.date}</small></p>
+                <textarea placeholder="Admin response..." id="response-${item.id}"></textarea>
+                <button onclick="submitResponse('${item.id}')">Submit Response</button>
+            `;
+            feedbackList.appendChild(feedbackItem);
+        });
+        if (feedbackArray.length === 0) {
+            feedbackList.innerHTML = '<p class="text-sm" style="color: var(--text-secondary)">No feedback submitted yet.</p>';
+        }
+    }
+    async function submitResponse(feedbackId) {
+        const responseText = document.getElementById(`response-${feedbackId}`).value;
+        const res = await fetch('/submit-response', {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ feedbackId, responseText })
+        });
+        if (res.ok) {
+            alert("Response submitted!");
+        } else {
+            alert("Error submitting response.");
+        }
+    }
+</script>
+</body>
+</html>

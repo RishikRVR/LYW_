@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>  
+  <link rel="manifest" href="manifest.json" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Courses | Learn Your Way</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: linear-gradient(135deg, #F6F8FF, #DFFFE0);
+      --content-bg: linear-gradient(145deg, #E0F7FA, #B2EBF2);
+      --nav-bg: linear-gradient(145deg, #10B981, #14B8A6);
+      --text-primary: #1F2937;
+      --text-secondary: #1F2937;
+      --button-bg: linear-gradient(145deg, #10B981, #14B8A6);
+      --button-hover: linear-gradient(145deg, #14B8A6, #0FA4AF);
+      --card-bg: rgba(255, 255, 255, 0.9);
+      --border-color: rgba(0, 0, 0, 0.1);
+      --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      --course-btn-gradient: linear-gradient(145deg, #10B981, #14B8A6);
+      --course-btn-hover: linear-gradient(145deg, #14B8A6, #0FA4AF);
+      --footer-bg: linear-gradient(145deg, #10B981, #14B8A6);
+    }
+    [data-theme="dark"] {
+      --bg-primary: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 70%, #16213e 100%);
+      --content-bg: linear-gradient(145deg, #1a1a2e, #16213e);
+      --nav-bg: linear-gradient(145deg, #6c5ce7, #8175ea);
+      --text-primary: #f5f5f5;
+      --text-secondary: rgba(245, 245, 245, 0.7);
+      --button-bg: linear-gradient(145deg, #6c5ce7, #8175ea);
+      --button-hover: linear-gradient(145deg, #8175ea, #5649d8);
+      --card-bg: rgba(26, 26, 26, 0.9);
+      --border-color: rgba(255, 255, 255, 0.1);
+      --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+      --course-btn-gradient: linear-gradient(145deg, #6c5ce7, #8175ea);
+      --course-btn-hover: linear-gradient(145deg, #8175ea, #5649d8);
+      --footer-bg: linear-gradient(145deg, #6c5ce7, #8175ea);
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background-attachment: fixed;
+      background-size: cover;
+    }
+    #courseHeading {
+        margin-bottom: 5rem;
+    }
+    .navbar {
+      background: var(--nav-bg);
+      color: white;
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    .card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 0.75rem;
+      padding: 1.5rem;
+      margin: 0.5rem;
+      flex: 0 1 300px;
+      min-width: 280px;
+      box-sizing: border-box;
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--card-shadow);
+      backdrop-filter: blur(5px);
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+      border-color: var(--button-bg);
+    }
+    .card h3 {
+      color: var(--text-primary);
+      margin-bottom: 1rem;
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+    .card p {
+      color: var(--text-secondary);
+      margin-bottom: 1.5rem;
+      line-height: 1.5;
+      flex-grow: 1;
+    }
+    .primary-btn {
+      background: var(--button-bg);
+      color: white;
+      padding: 0.5rem 1.25rem;
+      border-radius: 0.5rem;
+      text-decoration: none;
+      display: inline-block;
+      transition: all 0.3s ease;
+      margin: 0.25rem;
+      border: none;
+      cursor: pointer;
+      font-weight: 500;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .primary-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--button-hover);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: -1;
+    }
+    .primary-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    .primary-btn:hover::before {
+      opacity: 1;
+    }
+    .video-container iframe {
+      width: 100%;
+      height: 200px;
+      border-radius: 0.5rem;
+      margin-bottom: 1rem;
+      border: none;
+    }
+    .course-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .course-section {
+      background: var(--course-btn-gradient);
+      color: white;
+      border-radius: 0.75rem;
+      padding: 1.5rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      width: 30%;
+      min-width: 250px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      box-shadow: var(--card-shadow);
+      border: none;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+    }
+    .course-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--course-btn-hover);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: -1;
+    }
+    .course-section:hover {
+      transform: scale(1.03);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+    .course-section:hover::before {
+      opacity: 1;
+    }
+    .course-content {
+      display: none;
+      margin: 2rem auto;
+      max-width: 1200px;
+      flex-direction: column;
+      width: 100%;
+    }
+    .content {
+        max-width: 1200px;
+        margin: 2rem auto;
+        padding: 2rem;
+        padding-bottom: 6rem;
+        text-align: center;
+        flex: 1;
+        background: var(--content-bg);
+        backdrop-filter: blur(10px);
+        border-radius: 1rem;
+        box-shadow: var(--card-shadow);
+        border: 1px solid var(--border-color);
+        min-height: 1200px;
+    }
+    .back-btn {
+      background: var(--button-bg);
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.5rem;
+      margin: 2rem auto;
+      display: block;
+      width: fit-content;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      border: none;
+      box-shadow: var(--card-shadow);
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+    }
+    .back-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--button-hover);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: -1;
+    }
+    .back-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    }
+    .back-btn:hover::before {
+      opacity: 1;
+    }
+    .content-section {
+      margin-bottom: 3rem;
+      width: 100%;
+    }
+    .section-title {
+      font-size: 1.75rem;
+      margin-bottom: 1.5rem;
+      text-align: center;
+      position: relative;
+      padding-bottom: 0.5rem;
+      color: var(--text-primary);
+    }
+    .section-title:after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 3px;
+      background: var(--button-bg);
+      border-radius: 3px;
+    }
+    .section-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.5rem;
+      padding: 0 1rem;
+    }
+    .empty-message {
+      color: var(--text-secondary);
+      opacity: 0.6;
+      font-style: italic;
+      padding: 2rem;
+      text-align: center;
+      width: 100%;
+    }
+    .button-container {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: auto;
+      padding-top: 1rem;
+    }
+    #floating-tools {
+        position: fixed;
+        bottom: 1.5rem;
+        left: 1rem;
+        right: 1rem;
+        display: flex;
+        justify-content: space-between;
+        z-index: 950;
+        transition: bottom 0.3s ease;
+    }
+    #floating-tools.above-footer {
+         bottom: 6.5rem;
+    }
+    #timer {
+      background: var(--button-bg);
+      color: white;
+      padding: 0.5rem 0.8rem;
+      border-radius: 0.5rem;
+      font-family: monospace;
+      font-size: 0.9rem;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      cursor: pointer;
+      min-width: 60px;
+      text-align: center;
+    }
+    #chat-toggle {
+      background: var(--button-bg);
+      color: white;
+      width: 40px;
+      height: 40px;
+      font-size: 18px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+    #chatbox {
+      display: none;
+      position: fixed;
+      bottom: 5rem;
+      right: 1rem;
+      width: 300px;
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 0.75rem;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      overflow: hidden;
+      z-index: 1000;
+      flex-direction: column;
+      max-height: 400px;
+    }
+    #chat-header {
+      background: var(--nav-bg);
+      color: white;
+      padding: 0.75rem 1rem;
+      font-weight: bold;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    #chat-messages {
+      flex: 1;
+      padding: 0.75rem;
+      overflow-y: auto;
+      font-size: 1rem;
+      line-height: 1.0;
+      color: var(--text-primary);
+    }
+    #chat-input {
+      border-top: 1px solid var(--border-color);
+      padding: 0.5rem;
+      border: none;
+      outline: none;
+      width: 100%;
+      font-size: 14px;
+      background-color: var(--bg-secondary);
+      color: var(--text-primary);
+    }
+    footer {
+        background: var(--footer-bg);
+        color: white;
+        text-align: center;
+        padding: 1rem 1.5rem;
+        margin: 1rem auto;
+        width: calc(100% - 2rem);
+        max-width: 1200px;
+        border-radius: 1rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        position: relative;
+        z-index: 10;
+    }
+    footer.visible {
+      bottom: 0;
+    }
+    body.footer-visible #floating-tools {
+      bottom: 3.5rem;
+    }
+    .nav-buttons {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+    .theme-toggle, .logout-btn {
+      background-color: rgba(255, 255, 255, 0.2);
+      color: white;
+      border: none;
+      padding: 0.5rem;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.3s ease;
+    }
+    .theme-toggle:hover, .logout-btn:hover {
+      background-color: rgba(255, 255, 255, 0.3);
+    }
+    .theme-toggle svg, .logout-btn svg {
+      width: 20px;
+      height: 20px;
+    }
+    .user-section {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="text-xl font-bold cursor-pointer hover:underline" onclick="window.location.href='dashboard.html'">Learn Your Way</div>
+    <div class="nav-buttons">
+      <div class="user-section">
+        <div id="user-greeting">Hello, User</div>
+        <button id="themeToggle" class="theme-toggle" title="Toggle theme">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+          </svg>
+        </button>
+        <button class="logout-btn" onclick="logout()" title="Logout">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+  <div class="content">
+    <h1 id="courseHeading" class="text-3xl font-bold mb-8">Courses</h1>
+    <div id="courseGrid" class="course-grid">
+      <div class="course-section" onclick="toggleCourse('java')">Java</div>
+      <div class="course-section" onclick="toggleCourse('python')">Python</div>
+      <div class="course-section" onclick="toggleCourse('javascript')">JavaScript</div>
+      <div class="course-section" onclick="toggleCourse('cpp')">C++</div>
+      <div class="course-section" onclick="toggleCourse('ds')">Data Structures</div>
+      <div class="course-section" onclick="toggleCourse('algo')">Algorithms</div>
+      <div class="course-section" onclick="toggleCourse('webdev')">Web Development</div>
+    </div>
+    <div id="courseDetails" class="course-content"></div>
+    <button id="backButton" class="back-btn" style="display: none;" onclick="goBack()">← Back to Courses</button>
+  </div>
+  <div id="floating-tools">
+    <div id="timer" onclick="setCustomTimer()" title="Click to set timer">00:00</div>
+    <div id="chat-toggle" onclick="toggleChat()" title="Ask AI 🤖">💬</div>
+  </div>
+  <div id="chatbox">
+    <div id="chat-header">
+      <span>AI Chat</span>
+      <button onclick="toggleChat()">✕</button>
+    </div>
+    <div id="chat-messages"></div>
+    <div class="flex items-center border-t border-gray-300 dark:border-[#0FA4AF]">
+      <input id="chat-input" type="text" placeholder="Ask something..." 
+        class="flex-grow px-3 py-2 bg-transparent text-sm outline-none rounded-l-xl" 
+        onkeydown="handleChatInput(event)" />
+      <button onclick="sendChatMessage()" 
+        class="text-xl px-3 py-2 text-gray-600 dark:text-white hover:text-blue-500 transition rounded-r-xl">
+        📤
+      </button>
+    </div>    
+  </div>
+  <footer>
+    <p>&copy; 2025 Learn Your Way. All rights reserved.</p>
+    <p class="text-sm opacity-80 mt-2">Contact us: support@learnyourway.com</p>
+  </footer>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script>
+  const serverBaseURL = `http://${window.location.hostname}:5500`;
+  let contentData = null;
+  async function loadContentData() {
+    const localData = localStorage.getItem("dashboardContentData");
+    if (localData) {
+      contentData = JSON.parse(localData);
+    } else {
+      try {
+        const res = await fetch(`${serverBaseURL}/course-content.json`);
+        if (!res.ok) throw new Error("Failed to fetch course content");
+        const data = await res.json();
+        localStorage.setItem("dashboardContentData", JSON.stringify(data));
+        contentData = data;
+      } catch (err) {
+        console.error("Could not load course content:", err);
+      }
+    }
+  }
+  window.addEventListener("DOMContentLoaded", async () => {
+    await loadContentData();
+    const hash = window.location.hash.replace('#', '');
+    if (hash) {
+      const [course, section] = hash.split('_');
+      toggleCourse(course, section);
+    }
+  });
+    const username = localStorage.getItem("userName") || "User";
+    document.getElementById("user-greeting").textContent = `Hello, ${username}`;
+    const themeToggle = document.getElementById('themeToggle');
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    updateThemeIcon(savedTheme);
+    themeToggle.addEventListener('click', () => {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      updateThemeIcon(newTheme);
+    });
+    function updateThemeIcon(theme) {
+      const icon = themeToggle.querySelector('svg path');
+      if (theme === 'dark') {
+        icon.setAttribute('d', 'M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z');
+      } else {
+        icon.setAttribute('d', 'M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z');
+      }
+    }
+    function logout() {
+      localStorage.removeItem('userName');
+      localStorage.removeItem('isLoggedIn');
+      window.location.href = 'login.html';
+    }
+    const chatServerBaseURL = `http://${window.location.hostname}:5011`;
+    function toggleChat() {
+      const chatbox = document.getElementById("chatbox");
+      const isHidden = window.getComputedStyle(chatbox).display === "none";
+      chatbox.style.display = isHidden ? "flex" : "none";
+    }
+    function addChatMessage(sender, text) {
+      const messages = document.getElementById("chat-messages");
+      const wrapper = document.createElement("div");
+      wrapper.className = `mb-4 flex ${sender === "You" ? "justify-end" : "justify-start"}`;
+      const bubble = document.createElement("div");
+      bubble.className = `relative p-3 max-w-[80%] rounded-xl shadow-md text-xs whitespace-pre-wrap break-words prose dark:prose-invert`;
+      bubble.style.backgroundColor = sender === "You" ? "var(--button-bg)" : "var(--card-bg)";
+      bubble.style.color = sender === "var(--text-primary)";
+      bubble.innerHTML = `<div class="font-semibold mb-1">${sender}</div><div>${text}</div>`;
+      wrapper.appendChild(bubble);
+      messages.appendChild(wrapper);
+      messages.scrollTop = messages.scrollHeight;
+    }
+    async function handleChatInput(event) {
+      if (event.key !== "Enter") return;
+      const input = document.getElementById("chat-input");
+      const message = input.value.trim();
+      if (!message) return;
+      addChatMessage("You", message);
+      input.value = "";
+      try {
+        const res = await fetch(`${chatServerBaseURL}/chat`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message })
+        });
+        if (!res.ok) throw new Error(`Server responded with status ${res.status}`);
+        const data = await res.json();
+        addChatMessage("AI", marked.parse(data.response || "No response received."));
+      } catch (err) {
+        addChatMessage("AI", " Couldn't connect to the server.");
+      }
+    }
+    function sendChatMessage() {
+      const event = new KeyboardEvent("keydown", { key: "Enter" });
+      handleChatInput(event);
+    }
+    let countdownInterval;
+    let remainingSeconds = 0;
+    function setCustomTimer() {
+      const minutes = prompt("Enter timer duration in minutes:");
+      const minsNum = parseInt(minutes);
+      if (isNaN(minsNum) || minsNum <= 0) return alert("Invalid number");
+      clearInterval(countdownInterval);
+      remainingSeconds = minsNum * 60;
+      updateCountdownDisplay();
+      countdownInterval = setInterval(() => {
+        remainingSeconds--;
+        updateCountdownDisplay();
+        if (remainingSeconds <= 0) {
+          clearInterval(countdownInterval);
+          document.getElementById("timer").textContent = "Time's up!";
+        }
+      }, 1000);
+    }
+    function updateCountdownDisplay() {
+      const mins = String(Math.floor(remainingSeconds / 60)).padStart(2, '0');
+      const secs = String(remainingSeconds % 60).padStart(2, '0');
+      document.getElementById("timer").textContent = `${mins}:${secs}`;
+    }
+    function toggleCourse(course, scrollToSection = null) {
+      const courseGrid = document.getElementById("courseGrid");
+      const container = document.getElementById("courseDetails");
+      const backButton = document.getElementById("backButton");
+      const courseHeading = document.getElementById("courseHeading");
+      courseGrid.style.display = "none";
+      container.style.display = "flex";
+      backButton.style.display = "block";
+      courseHeading.textContent = course.charAt(0).toUpperCase() + course.slice(1);
+      container.innerHTML = "";
+      const types = ["videos", "notes", "quizzes"];
+      types.forEach(type => {
+        const key = `${course}_${type}`;
+        if (contentData[key]) {
+          const sectionDiv = document.createElement("div");
+          sectionDiv.className = "content-section";
+          const titleDiv = document.createElement("div");
+          titleDiv.className = "section-title";
+          titleDiv.textContent = type.charAt(0).toUpperCase() + type.slice(1);
+          sectionDiv.appendChild(titleDiv);
+          const rowDiv = document.createElement("div");
+          rowDiv.className = "section-row";
+          if (scrollToSection === type) {
+            setTimeout(() => {
+              sectionDiv.scrollIntoView({ behavior: "smooth" });
+            }, 200);
+          }
+          contentData[key].forEach((item, index) => {
+            if (item.type === "overview") return;
+            const card = document.createElement("div");
+            card.className = "card text-left";
+            let html = `<h3 class="text-lg font-semibold mb-2">${item.title}</h3>
+                        <p class="mb-2">${item.desc}</p>`;
+            if (item.type === "video") {
+              html += `<div class="video-container"><iframe src="${item.link}" frameborder="0" allowfullscreen></iframe></div>`;
+            } else if (item.type === "notes") {
+              html += `<div class="button-container"><a href="${item.link}" target="_blank" class="primary-btn">View Notes</a></div>`;
+            } else if (item.type === "quiz") {
+              html += `<div class="button-container"><a href="${item.link}" target="_blank" class="primary-btn">Take Quiz</a></div>`;
+            }
+            card.innerHTML = html;
+            rowDiv.appendChild(card);
+          });
+          sectionDiv.appendChild(rowDiv);
+          container.appendChild(sectionDiv);
+        }
+      });
+    }
+    function goBack() {
+      document.getElementById("courseDetails").style.display = "none";
+      document.getElementById("courseGrid").style.display = "flex";
+      document.getElementById("backButton").style.display = "none";
+      document.getElementById("courseHeading").textContent = "Courses";
+    }
+    document.addEventListener("DOMContentLoaded", () => {
+      const chatbox = document.getElementById("chatbox");
+      if (chatbox) chatbox.style.display = "none";
+      const footer = document.querySelector('footer');
+      const body = document.body;
+      window.addEventListener('scroll', function() {
+        const scrollPosition = window.innerHeight + window.scrollY;
+        const documentHeight = document.body.offsetHeight;
+        if (scrollPosition >= documentHeight - 10) {
+          footer.classList.add('visible');
+          body.classList.add('footer-visible');
+        } else {
+          footer.classList.remove('visible');
+          body.classList.remove('footer-visible');
+        }
+      });
+    });
+    document.addEventListener("DOMContentLoaded", () => {
+  const chatbox = document.getElementById("chatbox");
+  if (chatbox) chatbox.style.display = "none";
+  const floatingTools = document.getElementById("floating-tools");
+  const footer = document.querySelector("footer");
+  window.addEventListener("scroll", () => {
+    const footerTop = footer.getBoundingClientRect().top;
+    const windowHeight = window.innerHeight;
+    if (footerTop < windowHeight) {
+      floatingTools.classList.add("above-footer");
+    } else {
+      floatingTools.classList.remove("above-footer");
+    }
+  });
+});
+  </script>
+</body>
+</html>

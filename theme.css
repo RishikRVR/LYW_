@@ -1,0 +1,61 @@
+:root {
+    --background: #f0f4f8;
+    --container-bg: white;
+    --text-color: #333;
+    --button-bg: #AC8968;
+    --button-hover: #A69080;
+    --input-border: #93785B;
+    --toggle-color: #AC8968;
+    --toggle-hover: #A69080;
+    --link-color: #7e22ce;
+  }
+  
+  [data-theme="dark"] {
+    --background: #003135;
+    --container-bg: #024950;
+    --text-color: #AFDDE5;
+    --button-bg: #0FA4AF;
+    --button-hover: #964734;
+    --input-border: #AFDDE5;
+    --toggle-color: #0FA4AF;
+    --toggle-hover: #964734;
+    --link-color: #AFDDE5;
+  }
+  
+  body {
+    font-family: 'Inter', Arial, sans-serif;
+    background: var(--background);
+    color: var(--text-color);
+    transition: all 0.3s ease;
+    min-height: 100vh;
+    margin: 0;
+  }
+  
+  .theme-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: var(--toggle-color);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 8px 16px;
+    cursor: pointer;
+    font-size: 14px;
+    z-index: 1000;
+    transition: all 0.3s ease;
+  }
+  
+  .theme-toggle:hover {
+    background: var(--toggle-hover);
+    transform: translateY(-2px);
+  }
+  
+  a {
+    color: var(--link-color);
+    text-decoration: none;
+  }
+  
+  a:hover {
+    text-decoration: underline;
+  }

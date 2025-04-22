@@ -1,0 +1,121 @@
+{
+    "java_course": [
+      { "title": "Java Course Overview", "desc": "Complete Java programming course", "link": null, "type": "overview" },
+      { "title": "Java Basics", "desc": "Introduction to Java programming", "link": "https://www.youtube.com/embed/WPvGqX-TXP0", "type": "video" },
+      { "title": "Java Fundamentals", "desc": "Core concepts and syntax", "link": "https://example.com/java-notes.pdf", "type": "notes" }
+    ],
+    "java_notes": [
+      { "title": "Java Notes", "desc": "Java basics and fundamentals", "link": "https://www.tutorialspoint.com/java/java_tutorial.pdf", "type": "notes" },
+      { "title": "Java OOP Concepts", "desc": "Object-oriented programming in Java", "link": "https://www.iitk.ac.in/esc101/share/downloads/javanotes5.pdf", "type": "notes" }
+    ],
+    "java_quizzes": [
+      { "title": "Java Basics Quiz", "desc": "Test your Java fundamentals", "link": "https://www.w3schools.com/quiztest/quiztest.asp?qtest=JAVA", "type": "quiz" },
+      { "title": "Java OOP Quiz", "desc": "Challenge your object-oriented programming knowledge", "link": "https://www.geeksforgeeks.org/quizzes/java-quiz/inheritance-2-gq/", "type": "quiz" }
+    ],
+    "java_videos": [
+      { "title": "Java Tutorial for Beginners", "desc": "Learn Java programming", "link": "https://www.youtube.com/embed/WPvGqX-TXP0", "type": "video" },
+      { "title": "Java OOP Tutorial", "desc": "Object-oriented programming in Java", "link": "https://www.youtube.com/embed/eIrMbAQSU34", "type": "video" }
+    ],
+    "python_course": [
+      { "title": "Python Course Overview", "desc": "Complete Python programming course", "link": null, "type": "overview" },
+      { "title": "Python Crash Course", "desc": "Learn Python quickly", "link": "https://www.youtube.com/embed/rfscVS0vtbw", "type": "video" },
+      { "title": "Python Fundamentals", "desc": "Core concepts and syntax", "link": "https://example.com/python-notes.pdf", "type": "notes" }
+    ],
+    "python_notes": [
+      { "title": "Python Notes", "desc": "Python basics and fundamentals", "link": "", "type": "notes" },
+      { "title": "Python Advanced", "desc": "Advanced Python concepts", "link": "", "type": "notes" }
+    ],
+    "python_quizzes": [
+      { "title": "Python Basics Quiz", "desc": "Test your Python fundamentals", "link": "https://www.w3schools.com/quiztest/quiztest.asp?qtest=PYTHON", "type": "quiz" },
+      { "title": "Python Functions Quiz", "desc": "Challenge your knowledge of Python functions", "link": "https://pynative.com/basic-python-quiz-for-beginners/", "type": "quiz" }
+    ],
+    "python_videos": [
+      { "title": "Python Tutorial for Beginners", "desc": "Learn Python programming", "link": "https://www.youtube.com/embed/rfscVS0vtbw", "type": "video" },
+      { "title": "Python OOP Tutorial", "desc": "Object-oriented programming in Python", "link": "https://www.youtube.com/embed/_uQrJ0TkZlc", "type": "video" }
+    ],
+    "javascript_course": [
+      { "title": "JavaScript Course Overview", "desc": "Complete JavaScript programming course", "link": null, "type": "overview" },
+      { "title": "JavaScript Basics", "desc": "Introduction to JavaScript programming", "link": "https://www.youtube.com/embed/PkZNo7MFNFg", "type": "video" },
+      { "title": "JavaScript Fundamentals", "desc": "Core concepts and syntax", "link": "https://example.com/javascript-notes.pdf", "type": "notes" }
+    ],
+    "javascript_notes": [
+      { "title": "JavaScript Notes", "desc": "JavaScript basics and fundamentals", "link": "https://javascript.info/js.pdf", "type": "notes" },
+      { "title": "ES6 Features", "desc": "Modern JavaScript features", "link": "https://exploringjs.com/es6/downloads/es6-cheatsheet.pdf", "type": "notes" }
+    ],
+    "javascript_quizzes": [
+      { "title": "JavaScript Basics Quiz", "desc": "Test your JavaScript fundamentals", "link": "https://www.w3schools.com/quiztest/quiztest.asp?qtest=JS", "type": "quiz" },
+      { "title": "DOM Manipulation Quiz", "desc": "Challenge your DOM knowledge", "link": "https://www.tutorialspoint.com/javascript/javascript_online_quiz.htm", "type": "quiz" }
+    ],
+    "javascript_videos": [
+      { "title": "JavaScript Tutorial", "desc": "Learn JavaScript programming", "link": "https://www.youtube.com/embed/PkZNo7MFNFg", "type": "video" },
+      { "title": "DOM Manipulation", "desc": "Working with the Document Object Model", "link": "https://www.youtube.com/embed/0ik6X4DJKCc", "type": "video" }
+    ],
+    "cpp_course": [
+      { "title": "C++ Course Overview", "desc": "Complete C++ programming course", "link": null, "type": "overview" },
+      { "title": "C++ Basics", "desc": "Introduction to C++ programming", "link": "https://www.youtube.com/embed/vLnPwxZdW4Y", "type": "video" },
+      { "title": "C++ Fundamentals", "desc": "Core concepts and syntax", "link": "https://example.com/cpp-notes.pdf", "type": "notes" }
+    ],
+    "cpp_notes": [
+      { "title": "C++ Notes", "desc": "C++ basics and fundamentals", "link": "https://www.cplusplus.com/files/tutorial.pdf", "type": "notes" },
+      { "title": "C++ OOP Concepts", "desc": "Object-oriented programming in C++", "link": "https://www.cs.wustl.edu/~schmidt/PDF/C++-notes.pdf", "type": "notes" }
+    ],
+    "cpp_quizzes": [
+      { "title": "C++ Basics Quiz", "desc": "Test your C++ fundamentals", "link": "https://www.w3schools.com/quiztest/quiztest.asp?qtest=CPP", "type": "quiz" },
+      { "title": "C++ OOP Quiz", "desc": "Challenge your object-oriented programming knowledge", "link": "https://www.geeksforgeeks.org/c-plus-plus-gq/oop-gq/", "type": "quiz" }
+    ],
+    "cpp_videos": [
+      { "title": "C++ Tutorial for Beginners", "desc": "Learn C++ programming", "link": "https://www.youtube.com/embed/vLnPwxZdW4Y", "type": "video" },
+      { "title": "C++ OOP Tutorial", "desc": "Object-oriented programming in C++", "link": "https://www.youtube.com/embed/wN0x9eZLix4", "type": "video" }
+    ],
+    "ds_course": [
+      { "title": "Data Structures Overview", "desc": "Complete Data Structures course", "link": null, "type": "overview" },
+      { "title": "Arrays & Linked Lists", "desc": "Basic data structures", "link": "https://www.youtube.com/embed/RBSGKlAvoiM", "type": "video" },
+      { "title": "Stacks & Queues", "desc": "Linear data structures", "link": "https://example.com/ds-notes.pdf", "type": "notes" }
+    ],
+    "ds_notes": [
+      { "title": "Data Structures Notes", "desc": "Basic data structures", "link": "https://www.cs.cmu.edu/~adamchik/15-121/lectures/", "type": "notes" },
+      { "title": "Advanced Data Structures", "desc": "Trees and Graphs", "link": "https://opendatastructures.org/ods-python.pdf", "type": "notes" }
+    ],
+    "ds_quizzes": [
+      { "title": "Basic Data Structures Quiz", "desc": "Test your knowledge of arrays and linked lists", "link": "https://www.geeksforgeeks.org/data-structures-gq/array-gq/", "type": "quiz" },
+      { "title": "Advanced Data Structures Quiz", "desc": "Challenge your trees and graphs knowledge", "link": "https://www.sanfoundry.com/data-structure-questions-answers/", "type": "quiz" }
+    ],
+    "ds_videos": [
+      { "title": "Data Structures Tutorial", "desc": "Learn basic data structures", "link": "https://www.youtube.com/embed/RBSGKlAvoiM", "type": "video" },
+      { "title": "Trees and Graphs", "desc": "Advanced data structures", "link": "https://www.youtube.com/embed/t0MqYCyFi44", "type": "video" }
+    ],
+    "algo_course": [
+      { "title": "Algorithms Overview", "desc": "Complete Algorithms course", "link": null, "type": "overview" },
+      { "title": "Sorting Algorithms", "desc": "Bubble, Merge, Quick sort", "link": "https://www.youtube.com/embed/PgBzjlCcFvc", "type": "video" },
+      { "title": "Searching Algorithms", "desc": "Binary search and more", "link": "https://example.com/algo-notes.pdf", "type": "notes" }
+    ],
+    "algo_notes": [
+      { "title": "Algorithms Notes", "desc": "Basic algorithms", "link": "https://algs4.cs.princeton.edu/home/", "type": "notes" },
+      { "title": "Advanced Algorithms", "desc": "Dynamic programming", "link": "https://jeffe.cs.illinois.edu/teaching/algorithms/", "type": "notes" }
+    ],
+    "algo_quizzes": [
+      { "title": "Sorting Algorithms Quiz", "desc": "Test your sorting knowledge", "link": "https://www.geeksforgeeks.org/algorithms-gq/sorting-gq/", "type": "quiz" },
+      { "title": "Searching Algorithms Quiz", "desc": "Challenge your searching knowledge", "link": "https://www.sanfoundry.com/data-structure-questions-answers-searching/", "type": "quiz" }
+    ],
+    "algo_videos": [
+      { "title": "Sorting Algorithms", "desc": "Learn various sorting techniques", "link": "https://www.youtube.com/embed/PgBzjlCcFvc", "type": "video" },
+      { "title": "Dynamic Programming", "desc": "Advanced algorithm techniques", "link": "https://www.youtube.com/embed/oBt53YbR9Kk", "type": "video" }
+    ],
+    "webdev_course": [
+      { "title": "Web Development Overview", "desc": "Complete Web Development course", "link": null, "type": "overview" },
+      { "title": "HTML & CSS Basics", "desc": "Frontend fundamentals", "link": "https://www.youtube.com/embed/qz0aGYrrlhU", "type": "video" },
+      { "title": "JavaScript for Web", "desc": "Frontend interactivity", "link": "https://example.com/webdev-notes.pdf", "type": "notes" }
+    ],
+    "webdev_notes": [
+      { "title": "Web Development Notes", "desc": "HTML, CSS, and JavaScript", "link": "https://developer.mozilla.org/en-US/docs/Learn", "type": "notes" },
+      { "title": "Frontend Frameworks", "desc": "React and Vue.js", "link": "https://reactjs.org/docs/getting-started.html", "type": "notes" }
+    ],
+    "webdev_quizzes": [
+      { "title": "HTML/CSS Quiz", "desc": "Test your frontend knowledge", "link": "https://www.w3schools.com/quiztest/quiztest.asp?qtest=HTML", "type": "quiz" },
+      { "title": "JavaScript Quiz", "desc": "Challenge your JS knowledge", "link": "https://www.w3schools.com/quiztest/quiztest.asp?qtest=JS", "type": "quiz" }
+    ],
+    "webdev_videos": [
+      { "title": "HTML & CSS Tutorial", "desc": "Learn frontend basics", "link": "https://www.youtube.com/embed/qz0aGYrrlhU", "type": "video" },
+      { "title": "React Crash Course", "desc": "Modern frontend development", "link": "https://www.youtube.com/embed/w7ejDZ8SWv8", "type": "video" }
+    ]
+  }  
