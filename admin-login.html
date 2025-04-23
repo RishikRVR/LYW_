@@ -192,6 +192,7 @@ button:hover {
         if (res.ok) {
           localStorage.setItem("userName", data.name || "User");
           alert(data.message);
+          localStorage.setItem("adminLoggedIn", "true");
           window.location.href = "admin-panel.html";
         } else {
           alert(data.error || "Login failed.");

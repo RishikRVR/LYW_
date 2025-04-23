@@ -137,7 +137,7 @@
     <div class="text-xl font-bold cursor-pointer hover:underline" onclick="window.location.href='dashboard.html'">Learn Your Way</div>
     <div class="nav-buttons">
       <button id="theme-toggle" class="theme-toggle">🌓</button>
-      <button class="logout-btn" onclick="window.location.href='login.html'">Logout</button>
+      <button class="logout-btn" onclick="logoutAdmin()">Logout</button>
     </div>
   </nav>
   <div class="container">
@@ -160,8 +160,12 @@
     <p class="text-sm opacity-80 mt-2">Contact us: support@learnyourway.com</p>
   </footer>
   <script>
+  if (!localStorage.getItem("adminLoggedIn")) {
+    window.location.href = "admin-login.html";
+  }
+</script>
+  <script>
     const userApi = 'https://lyw.onrender.com';
-
     fetch(`${userApi}/users`)
       .then(res => res.json())
       .then(data => {
@@ -176,7 +180,6 @@
           tableBody.appendChild(row);
         });
       });
-
     function removeUser(email) {
       if (confirm(`Remove user ${email}?`)) {
         fetch(`${userApi}/remove_user`, {
@@ -188,7 +191,6 @@
         });
       }
     }
-
     fetch(`${userApi}/feedbacks`)
       .then(res => res.json())
       .then(data => {
@@ -213,7 +215,10 @@
         body: JSON.stringify({ id, reply })
       }).then(() => alert("Reply sent."));
     }
-
+    function logoutAdmin() {
+      localStorage.removeItem("adminLoggedIn");
+      window.location.href="login.html";
+    }
     document.addEventListener("DOMContentLoaded", () => {
       const savedTheme = localStorage.getItem('theme') || 'dark';
       document.documentElement.setAttribute('data-theme', savedTheme);
