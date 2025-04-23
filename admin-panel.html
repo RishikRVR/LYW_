@@ -8,66 +8,160 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    body { font-family: 'Inter', sans-serif; }
-    .admin-section-title {
+    :root {
+      --background: linear-gradient(135deg, #F6F8FF, #DFFFE0);
+      --container-bg: #FFFFFF;
+      --text-color: #1F2937;
+      --button-bg: linear-gradient(145deg, #10B981, #14B8A6);
+      --button-hover: linear-gradient(145deg, #14B8A6, #0FA4AF);
+      --footer-bg: linear-gradient(145deg, #10B981, #14B8A6);
+      --nav-bg: linear-gradient(145deg, #10B981, #14B8A6);
+    }
+    [data-theme="dark"] {
+      --background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 70%, #16213e 100%);
+      --container-bg: #1a1a1a;
+      --text-color: #f5f5f5;
+      --button-bg: linear-gradient(145deg, #6c5ce7, #8175ea);
+      --button-hover: linear-gradient(145deg, #8175ea, #5649d8);
+      --footer-bg: linear-gradient(145deg, #6c5ce7, #8175ea);
+      --nav-bg: linear-gradient(145deg, #6c5ce7, #8175ea);
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--background);
+      color: var(--text-color);
+      margin: 0;
+      padding: 0;
+    }
+    .navbar {
+      background: var(--nav-bg);
+      color: white;
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    .nav-buttons {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+    .theme-toggle, .logout-btn {
+      background-color: rgba(255, 255, 255, 0.2);
+      color: white;
+      border: none;
+      padding: 0.5rem;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.3s ease;
+    }
+    .theme-toggle{
+      position: absolute;
+      right: 6rem;
+      width: 3%;
+      top: 25%;
+    }
+    .theme-toggle:hover, .logout-btn:hover {
+      background-color: rgba(255, 255, 255, 0.3);
+    }
+    .container {
+      background: var(--container-bg);
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+      max-width: 1000px;
+      margin: 2rem auto;
+    }
+    h2.section-title {
       font-size: 1.5rem;
-      margin-bottom: 1rem;
       font-weight: 700;
+      margin-bottom: 1rem;
+    }
+    .admin-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 2rem;
+      text-align: center;
     }
     .admin-table th, .admin-table td {
-      padding: 0.5rem 1rem;
-      text-align: left;
+      padding: 0.75rem;
+      border: 1px solid #ccc;
     }
     .admin-table th {
-      background-color: var(--nav-bg);
+      background: var(--button-bg);
       color: white;
     }
     .admin-table tr:nth-child(even) {
       background-color: rgba(255,255,255,0.05);
     }
-    .admin-table tr:hover {
-      background-color: rgba(255,255,255,0.1);
+    .primary-btn {
+      background: var(--button-bg);
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+      margin: 0 auto;
+      display: block;
+    }
+    .primary-btn:hover {
+      background: var(--button-hover);
+    }
+    #feedback-list .primary-btn {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    footer {
+      background: var(--footer-bg);
+      color: white;
+      text-align: center;
+      padding: 1rem 1.5rem;
+      margin: 1rem auto;
+      width: calc(100% - 2rem);
+      max-width: 1200px;
+      border-radius: 1rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     }
   </style>
 </head>
-<body class="bg-primary text-primary">
-
+<body>
   <nav class="navbar">
-    <div class="text-xl font-bold cursor-pointer" onclick="window.location.href='dashboard.html'">Learn Your Way - Admin</div>
+    <div class="text-xl font-bold cursor-pointer hover:underline" onclick="window.location.href='dashboard.html'">Learn Your Way</div>
     <div class="nav-buttons">
-      <button class="primary-btn" onclick="window.location.href='login.html'">Logout</button>
+      <button id="theme-toggle" class="theme-toggle">🌓</button>
+      <button class="logout-btn" onclick="window.location.href='login.html'">Logout</button>
     </div>
   </nav>
-
-  <div class="content">
-    <section class="content-section">
-      <h2 class="section-title">Manage Users</h2>
-      <table class="admin-table w-full border-collapse">
-        <thead>
-          <tr>
-            <th>Email</th>
-            <th>Name</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody id="user-table-body">
-          <!-- Filled dynamically -->
-        </tbody>
-      </table>
-    </section>
-
-    <section class="content-section">
-      <h2 class="section-title">Feedback Responses</h2>
-      <div id="feedback-list" class="space-y-4 text-left max-w-3xl mx-auto">
-        <!-- Feedbacks will be listed here -->
-      </div>
-    </section>
+  <div class="container">
+    <h2 class="section-title">Manage Users</h2>
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>Email</th>
+          <th>Name</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="user-table-body"></tbody>
+    </table>
+    <h2 class="section-title">Feedback Responses</h2>
+    <div id="feedback-list" class="space-y-4"></div>
   </div>
-
+  <footer>
+    <p>&copy; 2025 Learn Your Way. All rights reserved.</p>
+    <p class="text-sm opacity-80 mt-2">Contact us: support@learnyourway.com</p>
+  </footer>
   <script>
-    const userApi = 'https://lyw.onrender.com/'; // Replace with actual backend URL
+    const userApi = 'https://lyw.onrender.com';
 
-    // Fetch Users
     fetch(`${userApi}/users`)
       .then(res => res.json())
       .then(data => {
@@ -95,18 +189,17 @@
       }
     }
 
-    // Fetch Feedbacks
     fetch(`${userApi}/feedbacks`)
       .then(res => res.json())
       .then(data => {
         const feedbackContainer = document.getElementById("feedback-list");
         data.forEach(entry => {
           const item = document.createElement("div");
-          item.className = "card";
+          item.className = "bg-gray-100 dark:bg-gray-800 p-4 rounded";
           item.innerHTML = `
-            <h3>${entry.user}</h3>
-            <p>${entry.message}</p>
-            <textarea placeholder="Reply..." class="w-full mt-2 p-2 rounded"></textarea>
+            <h3 class="font-bold text-left text-white">${entry.user}</h3>
+            <p class="text-center text-white">${entry.message}</p>
+            <textarea placeholder="Reply..." class="w-full mt-2 p-2 rounded text-black"></textarea>
             <button class="primary-btn mt-2" onclick="sendReply('${entry.id}', this.previousElementSibling.value)">Send Reply</button>
           `;
           feedbackContainer.appendChild(item);
@@ -120,6 +213,18 @@
         body: JSON.stringify({ id, reply })
       }).then(() => alert("Reply sent."));
     }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const savedTheme = localStorage.getItem('theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      const toggleBtn = document.getElementById('theme-toggle');
+      toggleBtn.addEventListener('click', () => {
+        const current = document.documentElement.getAttribute('data-theme');
+        const next = current === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', next);
+        localStorage.setItem('theme', next);
+      });
+    });
   </script>
 </body>
 </html>
