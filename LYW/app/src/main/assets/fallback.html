@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Offline</title>
+    <meta charset="utf-8">
+    <style>
+        body {
+            font-family: sans-serif;
+            text-align: center;
+            padding-top: 50px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            color: #444;
+        }
+        p {
+            color: #777;
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 12px 20px;
+            font-size: 16px;
+            border-radius: 6px;
+            background-color: #0066cc;
+            color: white;
+            border: none;
+        }
+        button:hover {
+            background-color: #0051a1;
+        }
+    </style>
+</head>
+<body>
+    <h1>Oops! Can't connect</h1>
+    <p>Please check your internet connection or try again.</p>
+    <button onclick="retry()">Retry</button>
+    <script>
+      let retryCount = parseInt(localStorage.getItem("retryCount") || "0");
+      function retry() {
+          retryCount++;
+          localStorage.setItem("retryCount", retryCount);
+          window.location.href = "http://10.147.17.132:5500/login.html";
+      }
+      if (retryCount >= 3) {
+          document.write("<p style='color: red;'>Still can't connect after multiple attempts.</p>");
+      }
+  </script>
+</body>
+</html>
