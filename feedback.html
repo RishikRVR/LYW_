@@ -672,36 +672,21 @@
     document.addEventListener('DOMContentLoaded', () => {
       displayFeedback();
     });
-    document.getElementById('feedbackForm').addEventListener('submit', (e) => {
-      e.preventDefault();
-      const name = document.getElementById('name').value;
-      const feedback = document.getElementById('feedback').value;
-      const date = new Date().toLocaleString();
-      const feedbackObj = { name, feedback, date };
-      let feedbackArray = JSON.parse(localStorage.getItem('feedback')) || [];
-      feedbackArray.push(feedbackObj);
-      localStorage.setItem('feedback', JSON.stringify(feedbackArray));
-      document.getElementById('feedbackForm').reset();
-      displayFeedback();
-    });
-    function displayFeedback() {
-      const feedbackList = document.getElementById('feedbackList');
-      const feedbackArray = JSON.parse(localStorage.getItem('feedback')) || [];
-      feedbackList.innerHTML = '';
-      feedbackArray.forEach((item) => {
-        const feedbackItem = document.createElement('div');
-        feedbackItem.classList.add('feedback-item');
-        feedbackItem.innerHTML = `
-          <h3>${item.name}</h3>
-          <p>${item.feedback}</p>
-          <p><small>Submitted on: ${item.date}</small></p>
-        `;
-        feedbackList.appendChild(feedbackItem);
-      });
-      if (feedbackArray.length === 0) {
-        feedbackList.innerHTML = '<p class="text-sm" style="color: var(--text-secondary)">No feedback submitted yet.</p>';
-      }
-    }
+    document.getElementById('feedbackForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const name = document.getElementById('name').value;
+  const message = document.getElementById('feedback').value;
+
+  const response = await fetch("https://lyw.onrender.com/submit_feedback", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ user: name, message })
+  });
+
+  const result = await response.json();
+  alert(result.message || "Feedback submitted!");
+  document.getElementById('feedbackForm').reset();
+});
     function toggleMenu() {
       document.querySelector(".menu-container").classList.toggle("open");
       document.querySelector(".menu-overlay").classList.toggle("open");
@@ -747,39 +732,76 @@
     <div id="feedbackList"></div>
 </section>
 <script>
-    function displayFeedback() {
-        const feedbackList = document.getElementById('feedbackList');
-        const feedbackArray = JSON.parse(localStorage.getItem('feedback')) || [];
-        feedbackList.innerHTML = '';
-        feedbackArray.forEach((item) => {
-            const feedbackItem = document.createElement('div');
-            feedbackItem.classList.add('feedback-item');
-            feedbackItem.innerHTML = `
-                <h3>${item.name}</h3>
-                <p>${item.feedback}</p>
-                <p><small>Submitted on: ${item.date}</small></p>
-                <textarea placeholder="Admin response..." id="response-${item.id}"></textarea>
-                <button onclick="submitResponse('${item.id}')">Submit Response</button>
-            `;
-            feedbackList.appendChild(feedbackItem);
-        });
-        if (feedbackArray.length === 0) {
-            feedbackList.innerHTML = '<p class="text-sm" style="color: var(--text-secondary)">No feedback submitted yet.</p>';
-        }
-    }
-    async function submitResponse(feedbackId) {
-        const responseText = document.getElementById(`response-${feedbackId}`).value;
-        const res = await fetch('/submit-response', {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ feedbackId, responseText })
-        });
-        if (res.ok) {
-            alert("Response submitted!");
-        } else {
-            alert("Error submitting response.");
-        }
-    }
+   let feedbackSubmitting = false;
+
+// Ensure the feedback is displayed after DOM is ready
+window.addEventListener("DOMContentLoaded", () => {
+  const savedName = localStorage.getItem("userName");
+  if (savedName) {
+    document.getElementById("name").value = savedName;
+  }
+  displayFeedback();
+});
+
+async function displayFeedback() {
+  const name = localStorage.getItem("userName") || document.getElementById('name').value;
+  if (!name) return;
+
+  const res = await fetch("https://lyw.onrender.com/my_feedbacks", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ user: name })
+  });
+
+  const feedbacks = await res.json();
+  const list = document.getElementById("feedbackList");
+  list.innerHTML = "";
+
+  if (!feedbacks.length) {
+    list.innerHTML = '<p class="text-sm text-gray-400">No feedback submitted yet.</p>';
+    return;
+  }
+
+  feedbacks.forEach((f) => {
+    const div = document.createElement("div");
+    div.className = "card mb-4";
+    div.innerHTML = `
+      <p>${f.message}</p>
+      ${f.reply && f.reply !== 'null' ? `<p class="mt-2 text-sm text-green-400"><strong>Admin:</strong> ${f.reply}</p>` : ''}
+    `;
+    list.appendChild(div);
+  });
+}  
+
+document.getElementById('submitFeedback').addEventListener('click', async (e) => {
+  if (feedbackSubmitting) return;
+  feedbackSubmitting = true;
+
+  const name = document.getElementById('name').value;
+  const message = document.getElementById('feedback').value;
+  localStorage.setItem("userName", name);
+
+  try {
+    const response = await fetch("https://lyw.onrender.com/submit_feedback", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ user: name, message })
+    });
+
+    const result = await response.json();
+    alert(result.message || "Feedback submitted!");
+    document.getElementById('feedbackForm').reset();
+    displayFeedback();
+  } catch (error) {
+    alert("Error submitting feedback.");
+  } finally {
+    feedbackSubmitting = false;
+  }
+});
+
 </script>
+<!-- Admin Reply (hidden by default) -->
+<div id="admin-reply-panel" style="display:none;"></div>
+
 </body>
 </html>
