@@ -140,7 +140,6 @@
     background: var(--button-hover);
     color: white;
   }
-
   .password-wrapper {
     position: relative;
     width: 100%;
@@ -206,12 +205,10 @@
     const registerForm = document.getElementById("register-form");
     const modeButton = document.getElementById("mode");
     const modeButton2 = document.getElementById("mode2");
-
     function toggleForms() {
       loginForm.style.display = loginForm.style.display === "none" ? "block" : "none";
       registerForm.style.display = registerForm.style.display === "none" ? "block" : "none";
     }
-
     modeButton.addEventListener("click", function () {
       const currentTheme = document.documentElement.getAttribute("data-theme");
       const newTheme = currentTheme === "dark" ? "light" : "dark";
@@ -219,11 +216,9 @@
       localStorage.setItem("theme", newTheme);
       this.textContent = newTheme === "dark" ? "Light Mode" : "Dark Mode";
     });
-
     modeButton2.addEventListener("click", function () {
       window.location.href = "admin-login.html";
     });
-
     loginForm.addEventListener("submit", async (e) => {
       e.preventDefault();
       const email = document.getElementById("login-email").value.trim();
@@ -247,7 +242,6 @@
         alert("Server error. Please try again.");
       }
     });
-
     registerForm.addEventListener("submit", async (e) => {
       e.preventDefault();
       const name = document.getElementById("register-name").value.trim();

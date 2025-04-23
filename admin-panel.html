@@ -207,13 +207,11 @@
           feedbackContainer.appendChild(item);
         });
       });
-
       function sendReply(id, reply) {
   if (!reply.trim()) {
     alert("Reply cannot be empty.");
     return;
   }
-
   fetch(`${userApi}/reply_feedback`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -223,7 +221,7 @@
       alert("Reply sent.");
       const button = document.querySelector(`button[onclick*="'${id}'"]`);
       if (button) {
-        button.parentElement.remove(); // Removes the feedback card
+        button.parentElement.remove();
       }
     } else {
       alert("Failed to send reply.");
