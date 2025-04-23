@@ -141,6 +141,7 @@ def chat():
         print("Gemini API error:", e)
         return jsonify({'response': "Oops! Gemini had a problem. Try again soon."}), 500
 with app.app_context():
-    db.create_all()
+    db.create_all(bind='users')
+    db.create_all(bind='admins')
 if __name__ == "__main__":
     app.run(host="0.0.0.0", debug=True)
