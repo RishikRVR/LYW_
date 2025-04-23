@@ -578,7 +578,9 @@
     </div>    
   </nav>
   <div class="menu-container">
+    <a href="home.html" class="nav-btn">Learn Your Way!</a>
     <nav class="space-y-4">
+      <a href="dashboard.html" class="nav-btn">Dashboard</a>
       <button class="course-btn" onclick="toggleSubMenu(this)">Courses</button>
       <div class="submenu">
         <button class="course-btn" onclick="toggleSubMenu(this)">Java</button>
@@ -624,9 +626,8 @@
           <a href="#" class="submenu-item" onclick="showContent('webdev_quizzes')">Quizzes</a>
         </div>
       </div>
-      <a href="contact.html" class="nav-btn">Contact</a>
-      <a href="feedback.html" class="nav-btn">Feedback</a>
       <a href="about.html" class="nav-btn">About</a>
+      <a href="contact.html" class="nav-btn">Contact</a>
       <a href="faq.html" class="nav-btn">FAQ</a>
     </nav>
   </div>
@@ -676,13 +677,11 @@
   e.preventDefault();
   const name = document.getElementById('name').value;
   const message = document.getElementById('feedback').value;
-
   const response = await fetch("https://lyw.onrender.com/submit_feedback", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ user: name, message })
   });
-
   const result = await response.json();
   alert(result.message || "Feedback submitted!");
   document.getElementById('feedbackForm').reset();
@@ -733,8 +732,6 @@
 </section>
 <script>
    let feedbackSubmitting = false;
-
-// Ensure the feedback is displayed after DOM is ready
 window.addEventListener("DOMContentLoaded", () => {
   const savedName = localStorage.getItem("userName");
   if (savedName) {
@@ -742,26 +739,21 @@ window.addEventListener("DOMContentLoaded", () => {
   }
   displayFeedback();
 });
-
 async function displayFeedback() {
   const name = localStorage.getItem("userName") || document.getElementById('name').value;
   if (!name) return;
-
   const res = await fetch("https://lyw.onrender.com/my_feedbacks", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ user: name })
   });
-
   const feedbacks = await res.json();
   const list = document.getElementById("feedbackList");
   list.innerHTML = "";
-
   if (!feedbacks.length) {
     list.innerHTML = '<p class="text-sm text-gray-400">No feedback submitted yet.</p>';
     return;
   }
-
   feedbacks.forEach((f) => {
     const div = document.createElement("div");
     div.className = "card mb-4";
@@ -772,22 +764,18 @@ async function displayFeedback() {
     list.appendChild(div);
   });
 }  
-
 document.getElementById('submitFeedback').addEventListener('click', async (e) => {
   if (feedbackSubmitting) return;
   feedbackSubmitting = true;
-
   const name = document.getElementById('name').value;
   const message = document.getElementById('feedback').value;
   localStorage.setItem("userName", name);
-
   try {
     const response = await fetch("https://lyw.onrender.com/submit_feedback", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ user: name, message })
     });
-
     const result = await response.json();
     alert(result.message || "Feedback submitted!");
     document.getElementById('feedbackForm').reset();
@@ -798,10 +786,7 @@ document.getElementById('submitFeedback').addEventListener('click', async (e) =>
     feedbackSubmitting = false;
   }
 });
-
 </script>
-<!-- Admin Reply (hidden by default) -->
 <div id="admin-reply-panel" style="display:none;"></div>
-
 </body>
 </html>
