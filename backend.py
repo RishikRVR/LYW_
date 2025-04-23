@@ -6,31 +6,45 @@ import google.generativeai as genai
 app = Flask(__name__)
 CORS(app)
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DB_LOCATION")
+app.config['SQLALCHEMY_BINDS'] = {
+    'users': os.environ.get("DB_LOCATION"),
+    'admins': os.environ.get("ADMIN_DB_LOCATION")
+}
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 class User(db.Model):
+    __bind_key__ = 'users'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(150), nullable=False)
+    email = db.Column(db.String(150), unique=True, nullable=False)
+    password = db.Column(db.String(150), nullable=False)
+class Feedback(db.Model):
+    __bind_key__ = 'users'
+    id = db.Column(db.Integer, primary_key=True)
+    user = db.Column(db.String(150), nullable=False)
+    message = db.Column(db.Text, nullable=False)
+    reply = db.Column(db.Text)
+class Admin(db.Model):
+    __bind_key__ = 'admins'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(150), nullable=False)
     email = db.Column(db.String(150), unique=True, nullable=False)
     password = db.Column(db.String(150), nullable=False)
 @app.route("/register", methods=["POST"])
-def register():
+def register_user():
     data = request.get_json()
     name = data.get("name")
     email = data.get("email")
     password = data.get("password")
     if not all([name, email, password]):
         return jsonify({"error": "All fields are required."}), 400
-    existing_user = User.query.filter_by(email=email).first()
-    if existing_user:
+    if User.query.filter_by(email=email).first():
         return jsonify({"error": "Email already registered."}), 409
-    new_user = User(name=name, email=email, password=password)
-    db.session.add(new_user)
+    db.session.add(User(name=name, email=email, password=password))
     db.session.commit()
     return jsonify({"message": "Registration successful!"}), 201
 @app.route("/login", methods=["POST"])
-def login():
+def login_user():
     data = request.get_json()
     email = data.get("email")
     password = data.get("password")
@@ -38,6 +52,80 @@ def login():
     if user and user.password == password:
         return jsonify({"message": "Login successful!", "name": user.name}), 200
     return jsonify({"error": "Invalid email or password"}), 401
+SECRET_ADMIN_CODE = os.environ.get("ADMIN_ACCESS_CODE")
+@app.route("/admin_register", methods=["POST"])
+def register_admin():
+    data = request.get_json()
+    name = data.get("name")
+    email = data.get("email")
+    password = data.get("password")
+    secret = data.get("secret")
+    if secret != SECRET_ADMIN_CODE:
+        return jsonify({"error": "Invalid secret code."}), 403
+    if not all([name, email, password]):
+        return jsonify({"error": "All fields are required."}), 400
+    if Admin.query.filter_by(email=email).first():
+        return jsonify({"error": "Email already registered."}), 409
+    db.session.add(Admin(name=name, email=email, password=password))
+    db.session.commit()
+    return jsonify({"message": "Admin registered successfully!"}), 201
+@app.route("/admin_login", methods=["POST"])
+def login_admin():
+    data = request.get_json()
+    email = data.get("email")
+    password = data.get("password")
+    admin = Admin.query.filter_by(email=email).first()
+    if admin and admin.password == password:
+        return jsonify({"message": "Login successful!", "name": admin.name}), 200
+    return jsonify({"error": "Invalid email or password"}), 401
+@app.route("/submit_feedback", methods=["POST"])
+def submit_feedback():
+    data = request.get_json()
+    user = data.get("user")
+    message = data.get("message")
+    if not user or not message:
+        return jsonify({"error": "User and message are required."}), 400
+    db.session.add(Feedback(user=user, message=message))
+    db.session.commit()
+    return jsonify({"message": "Feedback submitted."}), 201
+@app.route("/my_feedbacks", methods=["POST"])
+def get_user_feedbacks():
+    data = request.get_json()
+    user = data.get("user")
+    if not user:
+        return jsonify({"error": "User not provided"}), 400
+    feedbacks = Feedback.query.filter_by(user=user).all()
+    return jsonify([{"id": f.id, "message": f.message, "reply": f.reply} for f in feedbacks])
+@app.route("/feedbacks", methods=["GET"])
+def list_feedbacks():
+    feedbacks = Feedback.query.all()
+    return jsonify([{"id": f.id, "user": f.user, "message": f.message, "reply": f.reply} for f in feedbacks])
+@app.route("/reply_feedback", methods=["POST"])
+def reply_feedback():
+    data = request.get_json()
+    fid = data.get("id")
+    reply = data.get("reply")
+    feedback = Feedback.query.get(fid)
+    if feedback:
+        feedback.reply = reply
+        db.session.commit()
+        return jsonify({"message": "Reply saved."})
+    return jsonify({"error": "Feedback not found."}), 404
+@app.route("/users", methods=["GET"])
+def list_users():
+    users = User.query.all()
+    return jsonify([{"name": u.name, "email": u.email} for u in users])
+
+@app.route("/remove_user", methods=["POST"])
+def remove_user():
+    data = request.get_json()
+    email = data.get("email")
+    user = User.query.filter_by(email=email).first()
+    if user:
+        db.session.delete(user)
+        db.session.commit()
+        return jsonify({"message": "User removed."})
+    return jsonify({"error": "User not found."}), 404
 genai.configure(api_key=os.environ.get("GENAI_API_KEY"))
 model = genai.GenerativeModel("gemma-3-27b-it")
 @app.route('/chat', methods=['POST'])

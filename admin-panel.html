@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Panel | Learn Your Way</title>
+  <link rel="stylesheet" href="theme.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .admin-section-title {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
+    .admin-table th, .admin-table td {
+      padding: 0.5rem 1rem;
+      text-align: left;
+    }
+    .admin-table th {
+      background-color: var(--nav-bg);
+      color: white;
+    }
+    .admin-table tr:nth-child(even) {
+      background-color: rgba(255,255,255,0.05);
+    }
+    .admin-table tr:hover {
+      background-color: rgba(255,255,255,0.1);
+    }
+  </style>
+</head>
+<body class="bg-primary text-primary">
+
+  <nav class="navbar">
+    <div class="text-xl font-bold cursor-pointer" onclick="window.location.href='dashboard.html'">Learn Your Way - Admin</div>
+    <div class="nav-buttons">
+      <button class="primary-btn" onclick="window.location.href='login.html'">Logout</button>
+    </div>
+  </nav>
+
+  <div class="content">
+    <section class="content-section">
+      <h2 class="section-title">Manage Users</h2>
+      <table class="admin-table w-full border-collapse">
+        <thead>
+          <tr>
+            <th>Email</th>
+            <th>Name</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="user-table-body">
+          <!-- Filled dynamically -->
+        </tbody>
+      </table>
+    </section>
+
+    <section class="content-section">
+      <h2 class="section-title">Feedback Responses</h2>
+      <div id="feedback-list" class="space-y-4 text-left max-w-3xl mx-auto">
+        <!-- Feedbacks will be listed here -->
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const userApi = 'http://localhost:5008'; // Replace with actual backend URL
+
+    // Fetch Users
+    fetch(`${userApi}/users`)
+      .then(res => res.json())
+      .then(data => {
+        const tableBody = document.getElementById("user-table-body");
+        data.forEach(user => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${user.email}</td>
+            <td>${user.name}</td>
+            <td><button class="primary-btn" onclick="removeUser('${user.email}')">Remove</button></td>
+          `;
+          tableBody.appendChild(row);
+        });
+      });
+
+    function removeUser(email) {
+      if (confirm(`Remove user ${email}?`)) {
+        fetch(`${userApi}/remove_user`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email })
+        }).then(res => {
+          if (res.ok) location.reload();
+        });
+      }
+    }
+
+    // Fetch Feedbacks
+    fetch(`${userApi}/feedbacks`)
+      .then(res => res.json())
+      .then(data => {
+        const feedbackContainer = document.getElementById("feedback-list");
+        data.forEach(entry => {
+          const item = document.createElement("div");
+          item.className = "card";
+          item.innerHTML = `
+            <h3>${entry.user}</h3>
+            <p>${entry.message}</p>
+            <textarea placeholder="Reply..." class="w-full mt-2 p-2 rounded"></textarea>
+            <button class="primary-btn mt-2" onclick="sendReply('${entry.id}', this.previousElementSibling.value)">Send Reply</button>
+          `;
+          feedbackContainer.appendChild(item);
+        });
+      });
+
+    function sendReply(id, reply) {
+      fetch(`${userApi}/reply_feedback`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, reply })
+      }).then(() => alert("Reply sent."));
+    }
+  </script>
+</body>
+</html>
