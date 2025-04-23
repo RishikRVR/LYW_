@@ -118,8 +118,8 @@ def get_user_feedbacks():
 
 @app.route("/feedbacks", methods=["GET"])
 def list_feedbacks():
-    feedbacks = Feedback.query.all()
-    return jsonify([{"id": f.id, "user": f.user, "message": f.message, "reply": f.reply} for f in feedbacks])
+    feedbacks = Feedback.query.filter(Feedback.reply == None).all()  # <-- Only unreplied
+    return jsonify([{"id": f.id, "user": f.user, "message": f.message} for f in feedbacks])
 
 @app.route("/reply_feedback", methods=["POST"])
 def reply_feedback():

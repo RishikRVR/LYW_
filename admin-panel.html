@@ -208,13 +208,28 @@
         });
       });
 
-    function sendReply(id, reply) {
-      fetch(`${userApi}/reply_feedback`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id, reply })
-      }).then(() => alert("Reply sent."));
+      function sendReply(id, reply) {
+  if (!reply.trim()) {
+    alert("Reply cannot be empty.");
+    return;
+  }
+
+  fetch(`${userApi}/reply_feedback`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id, reply })
+  }).then(res => {
+    if (res.ok) {
+      alert("Reply sent.");
+      const button = document.querySelector(`button[onclick*="'${id}'"]`);
+      if (button) {
+        button.parentElement.remove(); // Removes the feedback card
+      }
+    } else {
+      alert("Failed to send reply.");
     }
+  });
+}
     function logoutAdmin() {
       localStorage.removeItem("adminLoggedIn");
       window.location.href="login.html";
