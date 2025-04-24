@@ -726,11 +726,7 @@
       window.location.href = `dashboard.html?topic=${topic}`;
     }
   </script>
-  <section class="card mt-6">
-    <h2 class="text-2xl font-bold mb-4" style="color: var(--text-secondary)">Feedback Received</h2>
-    <div id="feedbackList"></div>
-</section>
-<script>
+  <script>
    let feedbackSubmitting = false;
 window.addEventListener("DOMContentLoaded", () => {
   const savedName = localStorage.getItem("userName");
