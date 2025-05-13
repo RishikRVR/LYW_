@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 import os
 import time
+import requests
 import threading
 import google.generativeai as genai
 app = Flask(__name__)
@@ -40,8 +41,16 @@ class Admin(db.Model):
     password = db.Column(db.String(150), nullable=False)
 def self_ping():
     while True:
-        time.sleep(10)
-        print("Self Ping Triggered!")
+        try:
+            time.sleep(30)
+            url = os.environ.get("BACKEND_URL")
+            print("Pinging self at:", url)
+            requests.get(url)
+        except Exception as e:
+            print("Self-ping failed:", e)
+@app.route("/", methods=["GET"])
+def index():
+    return jsonify({"message": "Server is running."})
 @app.route("/register", methods=["POST"])
 def register_user():
     data = request.get_json()
