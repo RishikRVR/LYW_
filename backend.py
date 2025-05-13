@@ -2,6 +2,8 @@ from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 import os
+import time
+import threading
 import google.generativeai as genai
 app = Flask(__name__)
 CORS(app)
@@ -36,6 +38,10 @@ class Admin(db.Model):
     name = db.Column(db.String(150), nullable=False)
     email = db.Column(db.String(150), unique=True, nullable=False)
     password = db.Column(db.String(150), nullable=False)
+def self_ping():
+    while True:
+        time.sleep(10)
+        print("Self Ping Triggered!")
 @app.route("/register", methods=["POST"])
 def register_user():
     data = request.get_json()
@@ -137,5 +143,6 @@ def chat():
         return jsonify({'response': "Oops! Gemini had a problem. Try again soon."}), 500
 with app.app_context():
     db.create_all()
+threading.Thread(target=self_ping, daemon=True).start()
 if __name__ == "__main__":
     app.run(host="0.0.0.0", debug=True)
