@@ -1,11 +1,8 @@
-from flask import Flask, request, jsonify
-from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
-import os
-import time
-import requests
-import threading
 import google.generativeai as genai
+from flask_sqlalchemy import SQLAlchemy
+from flask import Flask, request, jsonify
+import os, time, requests, threading, pymysql
 app = Flask(__name__)
 CORS(app)
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))

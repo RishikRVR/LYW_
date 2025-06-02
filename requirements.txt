@@ -1,0 +1,7 @@
+flask_cors 
+google.generativeai 
+flask_sqlalchemy 
+flask 
+requests 
+pymysql 
+psycopg2
